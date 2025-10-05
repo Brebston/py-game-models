@@ -17,6 +17,10 @@ def main() -> None:
             race_name = race_payload.get("name")
             race_desc = race_payload.get("description") or ""
 
+            if not race_name:
+                print(f"Player {player_name} skipped: missing race name.")
+                raise ValueError("Missing race name")
+
             race, _ = Race.objects.get_or_create(
                 name=race_name,
                 defaults={"description": race_desc},
@@ -31,8 +35,8 @@ def main() -> None:
 
                 skill, _ = Skill.objects.get_or_create(
                     name=skill_name,
-                    race=race,
-                    defaults={"bonus": skill_bonus},
+                    defaults={"bonus": skill_bonus,
+                              "race": race},
                 )
 
             # --- Guild ---
