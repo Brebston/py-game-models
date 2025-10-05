@@ -11,9 +11,9 @@ def main() -> None:
         data = json.load(file)
 
     with transaction.atomic():
-        for player_name, p in data.items():
+        for player_name, player in data.items():
             # --- Race ---
-            race_payload = p.get("race") or {}
+            race_payload = player.get("race") or {}
             race_name = race_payload.get("name")
             race_desc = race_payload.get("description") or ""
 
@@ -40,7 +40,7 @@ def main() -> None:
                 )
 
             # --- Guild ---
-            guild_payload = p.get("guild")
+            guild_payload = player.get("guild")
             guild = None
             if guild_payload:
                 guild_name = guild_payload.get("name")
@@ -52,8 +52,8 @@ def main() -> None:
                 )
 
             # --- Player ---
-            email = p.get("email")
-            bio = p.get("bio") or ""
+            email = player.get("email")
+            bio = player.get("bio") or ""
 
             Player.objects.get_or_create(
                 nickname=player_name,
